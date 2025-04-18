@@ -3,83 +3,529 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoCart - Mountain Login</title>
+    <title>EcoCart - Sustainable Shopping Assistant</title>
+    
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
     <style>
+        /* Base styles */
         body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(-45deg, #2ecc71, #27ae60, #229954, #1e8449);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            height: 100vh;
-            overflow: hidden;
+            background-color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Mountain Background */
-        .mountain-container {
-            position: absolute;
-            bottom: 0;
+        /* Sidebar styles */
+        .sidebar {
+            position: fixed;
             left: 0;
-            right: 0;
-            height: 50vh;
-            z-index: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: #f0f9f0;
+            padding: 20px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border-radius: 0 24px 24px 0;
         }
 
-        .mountain {
-            position: absolute;
-            bottom: 0;
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        /* Logo styles */
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(52, 211, 153, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #059669;
+        }
+
+        .brand-logo i {
+            font-size: 24px;
+        }
+
+        .brand-text {
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            color: #059669;
+        }
+
+        /* Search styles */
+        .search-container {
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .search-box {
+            position: relative;
             width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 35px 10px 15px;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 10px;
+            background: white;
+            font-size: 14px;
+            color: #2c7a7b;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #059669;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-icon:hover {
+            color: #047857;
+        }
+
+        /* Search Results */
+        .search-results {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1002;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            background: rgba(52, 211, 153, 0.1);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Navigation section styles */
+        .nav-section {
+            margin-bottom: 30px;
+        }
+
+        .nav-section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #059669;
+            margin-bottom: 15px;
+            padding: 0 10px;
             opacity: 0.8;
         }
 
-        .mountain-back {
-            animation: mountainMove 80s linear infinite;
-            fill: #1d6d42;
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #2c7a7b;
+            border-radius: 12px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+            font-size: 14px;
         }
 
-        .mountain-mid {
-            animation: mountainMove 50s linear infinite;
-            fill: #2a8a5a;
+        .nav-link:hover {
+            background: rgba(52, 211, 153, 0.1);
+            color: #059669;
         }
 
-        .mountain-front {
-            animation: mountainMove 30s linear infinite;
-            fill: #3ba371;
+        .nav-link.active {
+            background: rgba(52, 211, 153, 0.15);
+            color: #059669;
+            font-weight: 500;
         }
 
-        @keyframes mountainMove {
-            0% { transform: translateX(-10%); }
-            100% { transform: translateX(10%); }
+        .nav-link i {
+            width: 20px;
+            margin-right: 12px;
+            font-size: 18px;
         }
 
-        /* Existing animations... */
-        /* Keep previous animations from earlier code */
-
-        .login-card {
-            position: relative;
-            z-index: 2;
+        /* Collapsed state styles */
+        .sidebar.collapsed .brand-text,
+        .sidebar.collapsed .nav-section-title,
+        .sidebar.collapsed .nav-link span,
+        .sidebar.collapsed .search-container {
+            display: none;
         }
 
+        .sidebar.collapsed .nav-link {
+            padding: 12px;
+            justify-content: center;
+        }
+
+        .sidebar.collapsed .nav-link i {
+            margin: 0;
+        }
+
+        /* Main content adjustment */
+        .main-content {
+            margin-left: 250px;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .main-content.expanded {
+            margin-left: 80px;
+        }
+
+        /* Toggle button styles */
+        .sidebar-toggle {
+            position: absolute;
+            right: -15px;
+            bottom: 20px;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .sidebar-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-toggle i {
+            color: #059669;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-toggle i {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .sidebar .brand-text,
+            .sidebar .nav-section-title,
+            .sidebar .nav-link span,
+            .sidebar .search-container {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .nav-link {
+                padding: 12px;
+                justify-content: center;
+            }
+            
+            .nav-link i {
+                margin: 0;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Mountain Background -->
-    <div class="mountain-container">
-        <svg class="mountain mountain-back" viewBox="0 0 100 50">
-            <path d="M-10 50 Q 25 25 60 50 Q 100 10 140 50 L-10 50" />
-        </svg>
-        <svg class="mountain mountain-mid" viewBox="0 0 100 50">
-            <path d="M-20 50 Q 15 30 40 50 Q 60 20 80 50 Q 100 10 120 50 L-20 50" />
-        </svg>
-        <svg class="mountain mountain-front" viewBox="0 0 100 50">
-            <path d="M-30 50 Q 10 20 30 50 Q 50 15 70 50 Q 90 30 110 50 Q 130 10 150 50 L-30 50" />
-        </svg>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-logo">
+                <i class="fas fa-leaf"></i>
+                <span class="brand-text">EcoCart</span>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" id="search-input" placeholder="Search eco products...">
+                <i class="fas fa-search search-icon" onclick="handleSearch()"></i>
+                <div class="search-results" id="search-results"></div>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Main</div>
+            <a class="nav-link active" href="#">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link" href="#">
+                <i class="far fa-folder"></i>
+                <span>Project</span>
+            </a>
+            <a class="nav-link" href="#">
+                <i class="fas fa-file-invoice"></i>
+                <span>Transaction</span>
+            </a>
+            <a class="nav-link" href="#">
+                <i class="fas fa-users"></i>
+                <span>My Team</span>
+            </a>
+            <a class="nav-link" href="#">
+                <i class="fas fa-chart-line"></i>
+                <span>Research Data</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Secondary</div>
+            <a class="nav-link" href="#">
+                <i class="far fa-file-alt"></i>
+                <span>Report</span>
+            </a>
+            <a class="nav-link" href="#">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Sale</span>
+            </a>
+            <a class="nav-link" href="#">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a class="nav-link" href="#">
+                <i class="far fa-question-circle"></i>
+                <span>Help</span>
+            </a>
+            <a class="nav-link" href="#">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Log out</span>
+            </a>
+        </div>
+
+        <div class="sidebar-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-chevron-left"></i>
+        </div>
     </div>
 
-    <!-- Rest of the login page content -->
-    <!-- Keep the previous login card and animations -->
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <!-- Hero Section -->
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                        Shop Sustainably with 
+                        <span class="text-emerald-600">EcoCart</span>
+                    </h1>
+                    <p class="text-lg text-gray-600 mb-5">
+                        Discover eco-friendly products and make informed shopping decisions
+                    </p>
+                    
+                    <!-- Search Section -->
+                    <div class="eco-search-shadow rounded-3xl p-1 bg-white">
+                        <div class="input-group">
+                            <input type="text" 
+                                   class="form-control form-control-lg border-0 py-3 px-4 rounded-start-3xl focus:ring-0"
+                                   placeholder="Search for products...">
+                            <button class="btn btn-success btn-lg px-5 rounded-end-3xl">
+                                <i class="fas fa-search me-2"></i> Analyze
+                            </button>
+                        </div>
+                    </div>
 
+                    <!-- Quick Stats -->
+                    <div class="mt-4 d-flex gap-3 justify-content-center flex-wrap">
+                        <div class="badge bg-success bg-opacity-10 text-success py-2 px-3">
+                            <i class="fas fa-seedling me-2"></i>1M+ Eco Products
+                        </div>
+                        <div class="badge bg-success bg-opacity-10 text-success py-2 px-3">
+                            <i class="fas fa-globe me-2"></i>500+ Sustainable Brands
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Categories -->
+        <div class="container my-5 py-5">
+            <h2 class="text-center text-2xl font-bold text-gray-800 mb-5">Popular Eco Categories</h2>
+            <div class="row g-4">
+                <!-- Category Card 1 -->
+                <div class="col-md-4">
+                    <div class="eco-card-hover bg-white rounded-3xl p-5 text-center h-100">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-2xl mx-auto mb-4 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-tshirt text-2xl text-emerald-600"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">Sustainable Fashion</h3>
+                        <p class="text-gray-600">Organic cotton, recycled materials, and ethical production</p>
+                        <div class="mt-3">
+                            <span class="badge bg-success">Avg. Score 8.5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Card 2 -->
+                <div class="col-md-4">
+                    <div class="eco-card-hover bg-white rounded-3xl p-5 text-center h-100">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-2xl mx-auto mb-4 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-recycle text-2xl text-emerald-600"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">Zero Waste</h3>
+                        <p class="text-gray-600">Reusable, biodegradable, and plastic-free alternatives</p>
+                        <div class="mt-3">
+                            <span class="badge bg-success">Avg. Score 9.1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Card 3 -->
+                <div class="col-md-4">
+                    <div class="eco-card-hover bg-white rounded-3xl p-5 text-center h-100">
+                        <div class="w-16 h-16 bg-emerald-100 rounded-2xl mx-auto mb-4 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-spa text-2xl text-emerald-600"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">Natural Beauty</h3>
+                        <p class="text-gray-600">Clean, cruelty-free, and sustainable personal care</p>
+                        <div class="mt-3">
+                            <span class="badge bg-success">Avg. Score 8.9</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Google Custom Search API -->
+    <script>
+        window.onload = function() {
+            // Initialize Google Custom Search
+            const gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + encodeURIComponent('YOUR_SEARCH_ENGINE_ID');
+            document.head.appendChild(gcse);
+        }
+    </script>
+
+    <!-- Google Custom Search Element -->
+    <div class="gcse-searchresults-only"></div>
+    
+    <!-- Sidebar Animation Script -->
+    <script>
+        // Add active class to clicked nav links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const toggleIcon = document.querySelector('.sidebar-toggle i');
+            
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+            
+            if (sidebar.classList.contains('collapsed')) {
+                toggleIcon.classList.remove('fa-chevron-left');
+                toggleIcon.classList.add('fa-chevron-right');
+            } else {
+                toggleIcon.classList.remove('fa-chevron-right');
+                toggleIcon.classList.add('fa-chevron-left');
+            }
+        }
+
+        // Search functionality
+        let searchTimeout;
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+
+        function handleSearch() {
+            const query = searchInput.value.trim();
+            if (query.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            // Create a new Custom Search Element
+            if (!document.querySelector('.gsc-control-cse')) {
+                google.search.cse.element.render({
+                    div: 'search-results',
+                    tag: 'searchresults-only',
+                    gname: 'eco-search'
+                });
+            }
+
+            // Execute the search
+            const element = google.search.cse.element.getElement('eco-search');
+            element.execute(query + ' eco-friendly sustainable');
+            searchResults.classList.add('active');
+        }
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(handleSearch, 500);
+        });
+
+        searchInput.addEventListener('focus', function() {
+            if (searchResults.children.length > 0) {
+                searchResults.classList.add('active');
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
